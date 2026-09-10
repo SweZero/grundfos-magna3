@@ -1,0 +1,197 @@
+# ESPHome 2026.8.2; tested board: M5Stack Atom S3 Lite.
+# Replace the pump address and Wi-Fi placeholders before installation.
+esphome:
+  name: grundfos-magna3-example
+  friendly_name: Grundfos MAGNA3
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+wifi:
+  ssid: YOUR_WIFI_SSID
+  password: CHANGE_ME_WIFI_PASSWORD
+logger:
+  level: DEBUG
+api: {}
+ota:
+- platform: esphome
+web_server:
+  version: 3
+  sorting_groups:
+  - id: grundfos_control
+    name: Control
+    sorting_weight: 10
+  - id: grundfos_setpoints
+    name: Setpoints
+    sorting_weight: 20
+  - id: grundfos_statistics
+    name: Statistics
+    sorting_weight: 50
+  - id: system_diagnostics
+    name: Diagnostics
+    sorting_weight: 20000
+external_components:
+- source:
+    type: git
+    url: https://github.com/grandalos/grundfos-magna3
+    ref: main
+  components:
+  - grundfos_magna3
+esp32_ble_tracker:
+  scan_parameters:
+    active: true
+ble_client:
+- mac_address: AA:BB:CC:DD:EE:FF
+  id: magna3_ble
+  auto_connect: true
+grundfos_magna3:
+  id: magna3
+  ble_client_id: magna3_ble
+  update_interval: 30s
+  request_encryption: true
+number:
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: constant_pressure
+  id: magna3_constant_pressure_setpoint
+  name: Constant Pressure Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 10
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: proportional_pressure
+  id: magna3_proportional_pressure_setpoint
+  name: Proportional Pressure Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 20
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: constant_curve
+  id: magna3_constant_curve_setpoint
+  name: Constant Curve Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 30
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: constant_temperature
+  id: magna3_constant_temperature_setpoint
+  name: Constant Temperature Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 40
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: constant_flow
+  id: magna3_constant_flow_setpoint
+  name: Constant Flow Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 50
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  control_mode: differential_temperature
+  id: magna3_differential_temperature_setpoint
+  name: Differential Temperature Setpoint
+  web_server:
+    sorting_group_id: grundfos_setpoints
+    sorting_weight: 60
+switch:
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  id: magna3_pump_running
+  name: Pump Running
+  web_server:
+    sorting_group_id: grundfos_control
+    sorting_weight: 10
+- platform: ble_client
+  ble_client_id: magna3_ble
+  id: magna3_ble_connection
+  name: BLE Connection
+  web_server:
+    sorting_group_id: system_diagnostics
+    sorting_weight: 50
+  entity_category: config
+sensor:
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  operating_hours:
+    name: Operating Hours
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 20
+  motor_current:
+    name: Motor Current
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 20
+  power:
+    name: Power
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 10
+  motor_speed:
+    name: Motor Speed
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 30
+  head_raw:
+    name: Head Raw
+    web_server:
+      sorting_group_id: system_diagnostics
+      sorting_weight: 30
+    entity_category: diagnostic
+  flow_raw:
+    name: Flow Raw
+    web_server:
+      sorting_group_id: system_diagnostics
+      sorting_weight: 20
+  liquid_temperature:
+    name: Liquid Temperature
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 30
+  control_source_raw:
+    name: Control Source Raw
+    web_server:
+      sorting_group_id: system_diagnostics
+      sorting_weight: 10
+  energy_consumption:
+    name: Energy Consumption
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 10
+  head:
+    name: Head
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 10
+  number_of_starts:
+    name: Number of Starts
+    web_server:
+      sorting_group_id: grundfos_statistics
+      sorting_weight: 30
+  control_mode_raw:
+    name: Control Mode Raw
+    web_server:
+      sorting_group_id: system_diagnostics
+      sorting_weight: 40
+    entity_category: diagnostic
+select:
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  id: magna3_control_mode
+  name: Control Mode
+  web_server:
+    sorting_group_id: grundfos_control
+    sorting_weight: 30
+text_sensor:
+- platform: grundfos_magna3
+  grundfos_magna3_id: magna3
+  id: magna3_operating_mode
+  name: Operating Mode
+  web_server:
+    sorting_group_id: grundfos_control
+    sorting_weight: 20

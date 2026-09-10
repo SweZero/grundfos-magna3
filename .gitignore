@@ -1,0 +1,23 @@
+# Gitignore settings for ESPHome
+# This is an example and may include too much for your use-case.
+# You can modify this file to suit your needs.
+/.esphome/
+/secrets.yaml
+
+# Local artifacts must not enter a source release.
+__pycache__/
+*.pyc
+.DS_Store
+.esphome/
+.ci/
+release/
+build/
+*.bin
+*.elf
+*.map
+*.log
+*.pcap
+*.pcapng
+*.btsnoop
+bugreport*/
+captures/
