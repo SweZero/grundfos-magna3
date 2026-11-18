@@ -345,7 +345,7 @@ void Magna3::receive_(const uint8_t *data, size_t size) {
         } else {
           ESP_LOGD(TAG, "Setpoint raw=0x%04X not interpreted: automatic/unknown/changed mode 0x%02X", raw, mode);
         }
-      } else if (rx_[0] == 0x24 && rx_[2] == 0xF8 && rx_[3] == 0xE7 && rx_[4] == 0x03 &&
+      } else if (rx_[0] == 0x24 && rx_[2] == 0xF8 && rx_[3] == 0xF7 && rx_[4] == 0x03 &&
                  (mode_write_ == ModeWrite::WAIT_ACK || mode_write_ == ModeWrite::READBACK)) {
         if (mode_ack && rx_[5] == 0) {
           if (operating_write_) ESP_LOGD(TAG, "RX operating mode class03 ACK: success");
@@ -360,7 +360,7 @@ void Magna3::receive_(const uint8_t *data, size_t size) {
           mode_write_ = ModeWrite::IDLE;
           requested_mode_ = -1;
         }
-      } else if (length == 8 && rx_[0] == 0x24 && rx_[2] == 0xF8 && rx_[3] == 0xE7 &&
+      } else if (length == 8 && rx_[0] == 0x24 && rx_[2] == 0xF8 && rx_[3] == 0xF7 &&
                  rx_[4] == 0x0C && rx_[5] == 0 && pending_ && !awaiting_get_) {
         ESP_LOGD(TAG, "SET acknowledged; awaiting GET readback");
       } else {
