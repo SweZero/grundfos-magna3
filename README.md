@@ -83,7 +83,7 @@ Use the component directly from GitHub:
 external_components:
   - source:
       type: git
-      url: https://github.com/grandalos/grundfos-magna3
+      url: https://github.com/SweZero/grundfos-magna3
       ref: main
     components: [grundfos_magna3]
 ```
