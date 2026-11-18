@@ -22,7 +22,7 @@ inline int mode_index(const char *name) {
 // Class 02 datapoints 0x70 and 0x55 are readback-only here: SET attempts were
 // rejected by the tested pump. This does not describe all GENI class 02 commands.
 inline const char *mode_ack(const uint8_t *f, size_t n) {
-  if (n != 8 || f[0] != 0x24 || f[1] != 4 || f[2] != 0xF8 || f[3] != 0xF7 ||
+  if (n != 8 || f[0] != 0x24 || f[1] != 4 || f[2] != 0xF8 || f[3] != 0x20 ||
       f[4] != 0x03 || (f[5] & 0x3F) != 0) return nullptr;
   if (crc(f + 1, n - 3) != ((uint16_t(f[6]) << 8) | f[7])) return nullptr;
   switch (f[5] >> 6) {
@@ -34,7 +34,7 @@ inline const char *mode_ack(const uint8_t *f, size_t n) {
   return nullptr;
 }
 inline std::array<uint8_t, 9> mode_command(const ControlMode &mode) {
-  std::array<uint8_t, 9> frame{0x27,0x05,0xF7,0xF8,0x03,0x81,mode.command,0,0};
+  std::array<uint8_t, 9> frame{0x27,0x05,0x20,0xF8,0x03,0x81,mode.command,0,0};
   checksum(frame);
   return frame;
 }
