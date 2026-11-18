@@ -22,12 +22,12 @@ template<size_t N> inline void checksum(std::array<uint8_t, N> &frame) {
   frame[N - 1] = value;
 }
 inline std::array<uint8_t, 9> get() {
-  std::array<uint8_t, 9> frame{0x27, 0x05, 0xF7, 0xF8, 0x0C, 0x01, 0xCA, 0, 0};
+  std::array<uint8_t, 9> frame{0x27, 0x05, 0x20, 0xF8, 0x0C, 0x01, 0xCA, 0, 0};
   checksum(frame);
   return frame;
 }
 inline std::array<uint8_t, 11> set(uint16_t raw) {
-  std::array<uint8_t, 11> frame{0x27, 0x07, 0xF7, 0xF8, 0x0C, 0x83, 0xCA,
+  std::array<uint8_t, 11> frame{0x27, 0x07, 0x20, 0xF8, 0x0C, 0x83, 0xCA,
                                uint8_t(raw >> 8), uint8_t(raw), 0, 0};
   checksum(frame);
   return frame;
@@ -36,7 +36,7 @@ inline std::array<uint8_t, 11> set(uint16_t raw) {
 // Untagged values are only meaningful while awaiting our single-item GET.
 inline bool read_value(const uint8_t *f, size_t n, uint16_t &raw, bool awaiting_get = false) {
   if (n != 10 && n != 11) return false;
-  if (f[0] != 0x24 || f[1] != n - 4 || f[2] != 0xF8 || f[3] != 0xF7 || f[4] != 0x0C)
+  if (f[0] != 0x24 || f[1] != n - 4 || f[2] != 0xF8 || f[3] != 0x20 || f[4] != 0x0C)
     return false;
   if (crc(f + 1, n - 3) != ((uint16_t(f[n - 2]) << 8) | f[n - 1])) return false;
   size_t offset;
