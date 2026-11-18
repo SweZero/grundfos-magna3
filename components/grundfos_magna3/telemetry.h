@@ -9,7 +9,7 @@ inline std::array<uint8_t, TELEMETRY_IDS.size() + 8> telemetry_get() {
   std::array<uint8_t, TELEMETRY_IDS.size() + 8> frame{};
   frame[0] = 0x27;
   frame[1] = TELEMETRY_IDS.size() + 4;
-  frame[2] = 0xE7;
+  frame[2] = 0xF7;
   frame[3] = 0xF8;
   frame[4] = 0x02;
   frame[5] = TELEMETRY_IDS.size();
@@ -28,7 +28,7 @@ struct Telemetry { std::array<float, 12> values; uint8_t operating_mode_raw; };
 inline bool read_telemetry(const uint8_t *f, size_t n, Telemetry &result) {
   // One complete APDU: 6 header + 16 values + 2 CRC bytes.
   // Reject trailing data as well as truncated frames; reassembly splits frames upstream.
-  if (n != TELEMETRY_IDS.size() + 8 || f[0] != 0x24 || f[1] != TELEMETRY_IDS.size() + 4 || f[2] != 0xF8 || f[3] != 0xE7 ||
+  if (n != TELEMETRY_IDS.size() + 8 || f[0] != 0x24 || f[1] != TELEMETRY_IDS.size() + 4 || f[2] != 0xF8 || f[3] != 0xF7 ||
       f[4] != 0x02 || f[5] != TELEMETRY_IDS.size()) return false;
   if (crc(f + 1, n - 3) != ((uint16_t(f[n - 2]) << 8) | f[n - 1])) return false;
   const auto *d = f + 6;
