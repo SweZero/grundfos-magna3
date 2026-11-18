@@ -4,7 +4,7 @@ Direct Grundfos MAGNA3 control and telemetry over BLE/GENI for ESPHome and Home 
 
 ## Status
 
-**Version 0.1.0.** Reverse-engineered and tested on a physical **Grundfos MAGNA3 25-80 180**, using an M5Stack Atom S3 Lite (ESP32-S3). Identical behaviour across other MAGNA3 variants is not yet established.
+**Version 0.1.0.** Reverse-engineered and tested on a physical **Grundfos MAGNA3 25-60 180**, using an ESP-32S Development Board. Identical behaviour across other MAGNA3 variants is not yet established.
 
 Licensed under MIT. See [release notes](RELEASE_NOTES_0.1.0.md).
 
